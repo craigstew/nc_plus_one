@@ -9,7 +9,8 @@ if not os.getenv("DB_NAME"):
 
 conn = psycopg2.connect(
     dbname=os.environ["DB_NAME"],
-    user=os.environ["DB_USER"]
+    user=os.environ["DB_USER"],
+    password=os.environ["DB_PASSWORD"]
 )
 
 def connection_db():
