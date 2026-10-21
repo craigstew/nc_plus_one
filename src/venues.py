@@ -1,4 +1,5 @@
 import json
+from src.data_handler import load_data
 
 def drop_venues_data(cursor):
     cursor.execute("DROP TABLE IF EXISTS venues;")
@@ -13,8 +14,7 @@ def build_venues_data(cursor):
 
 def inserting_venues_data(cursor):
 
-    with open("db/data/venues.json") as file:
-        data = json.load(file)
+    data = load_data("db/data/venues.json")
 
     for venue in data:
         insert_statement = "INSERT INTO venues (name, address, capacity) VALUES (%s, %s, %s);"

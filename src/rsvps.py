@@ -1,4 +1,5 @@
 import json
+from src.data_handler import load_data
 
 def drop_rsvps_data(cursor):
     cursor.execute("DROP TABLE IF EXISTS rsvps;")
@@ -13,8 +14,7 @@ def build_rsvps_data(cursor):
 
 def inserting_rsvps_data(cursor):
 
-    with open("db/data/rsvps.json") as file:
-        data = json.load(file)
+    data = load_data("db/data/rsvps.json")
 
     for rsvp in data:
         insert_statement = "INSERT INTO rsvps (attendee_id, event_id) VALUES (%s, %s);"

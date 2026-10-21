@@ -1,4 +1,5 @@
 import json
+from src.data_handler import load_data
 
 def drop_users_data(cursor):
     cursor.execute("DROP TABLE IF EXISTS users;")
@@ -14,8 +15,7 @@ def build_users_data(cursor):
 
 def inserting_users_data(cursor):
 
-    with open("db/data/users.json") as file:
-        data = json.load(file)
+    data = load_data("db/data/users.json")
 
     for user in data:
         insert_statement = "INSERT INTO users (email, password, name) VALUES (%s, %s, %s);"

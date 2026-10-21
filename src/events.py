@@ -1,4 +1,5 @@
 import json
+from src.data_handler import load_data
 
 def drop_events_data(cursor):
     cursor.execute("DROP TABLE IF EXISTS events;")
@@ -17,8 +18,7 @@ def build_events_data(cursor):
 
 def inserting_events_data(cursor):
 
-    with open("db/data/events.json") as file:
-        data = json.load(file)
+    data = load_data("db/data/events.json")
 
     for event in data:
         insert_statement = "INSERT INTO events (title, description, starts_at, ends_at, organiser_id, venue_id) VALUES (%s, %s, %s, %s, %s, %s);"
