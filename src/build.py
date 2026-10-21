@@ -1,0 +1,33 @@
+def build_table():
+    return """CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE venues (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NUll,
+    address TEXT,
+    capacity INTEGER
+    );
+
+    CREATE TABLE events (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    starts_at TIMESTAMP NOT NULL,
+    ends_at TIMESTAMP NOT NULL,
+    organiser_id INTEGER REFERENCES users(id),
+    venue_id INTEGER REFERENCES venues(id),
+    created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE rsvps (
+    id SERIAL PRIMARY KEY,
+    attendee_id INTEGER REFERENCES users(id),
+    event_id INTEGER REFERENCES events(id),
+    created_at TIMESTAMP DEFAULT NOW()
+    );"""
