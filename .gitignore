@@ -2,4 +2,5 @@
 .env
 .env.development
 .env.production
+.env.test
 __pycache__

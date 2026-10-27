@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 
-load_dotenv(".env")
+load_dotenv(".env.test")
 
 if not os.getenv("DB_NAME"):
     raise RuntimeError("DB_NAME is not set. Add it to your .env file.")
