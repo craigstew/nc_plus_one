@@ -1,5 +1,6 @@
 import json
 from src.data_handler import load_data
+from src.password import hash_password
 
 def drop_users_data(cursor):
     cursor.execute("DROP TABLE IF EXISTS users;")
@@ -19,4 +20,4 @@ def inserting_users_data(cursor):
 
     for user in data:
         insert_statement = "INSERT INTO users (email, password, name) VALUES (%s, %s, %s);"
-        cursor.execute(insert_statement, (user["email"], user["password"], user["name"]))
+        cursor.execute(insert_statement, (user["email"], hash_password(user["password"]), user["name"]))

@@ -1,9 +1,29 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from connection import connection_db
+from src.auth import get_secret
+import jwt
 
 events_router = APIRouter(prefix="/events", tags=["events"])
 
-@events_router.get("", status_code=200)
+bearer_scheme = HTTPBearer(auto_error=False)
+
+def get_current_user(credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme)):
+    unauthorised = HTTPException (
+        status_code=401,
+        detail={"code": "NOT_AUTHENTICATED", "message": "User not authenticated!"},
+    )
+
+    if credentials is None:
+        raise unauthorised
+
+    try:
+        payload = jwt.decode(credentials.credentials, get_secret(), "HS256")
+    except:
+        raise unauthorised
+
+
+@events_router.get("", status_code=200, dependencies=[Depends(get_current_user)])
 def list_routes():
     conn = connection_db()
     cursor = conn.cursor()
@@ -14,7 +34,7 @@ def list_routes():
     return{"events": [{"id": r[0], "title": r[1], "starts_at": r[2], "ends_at": r[3], "location": r[4]} for r in rows]}
 
 
-@events_router.get("/{event_id}")
+@events_router.get("/{event_id}", status_code=200, dependencies=[Depends(get_current_user)])
 def get_event(event_id: str):
     if not event_id.isdigit():
         raise HTTPException (

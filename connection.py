@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 
+
 def connection_db():
 
     load_dotenv(".env.test")
