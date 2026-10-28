@@ -17,6 +17,7 @@ def seed():
     cursor.close()
     conn.close()
 
+seed()
 
 app = FastAPI(title="Event Booking API", debug=True)
 app.include_router(events_router)
