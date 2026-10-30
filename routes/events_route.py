@@ -261,3 +261,36 @@ def update_event(event_id: int, body: UpdateEvent, user_id = Depends(get_current
     conn.close()
 
     return {"event" : {"id": row[0], "title": row[1], "description": row[2], "starts_at": row[3], "ends_at": row[4], "venue_id": row[6], "organiser_id": row[5], "created_at": row[7]}}
+
+
+@events_router.get("/{event_id}/attendees", status_code=200, dependencies=[Depends(get_current_user)])
+def return_attendees_for_event(event_id: int, user_id = Depends(get_current_user)):
+
+    conn = connection_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM events WHERE id = %s", (event_id,))
+    real_event = cursor.fetchone()
+
+    if not real_event:
+        raise HTTPException (
+            status_code=404,
+            detail={"code": "NOT_FOUND", "message": "Event not found!"},
+        )
+
+    cursor.execute("SELECT * FROM events WHERE id = %s AND organiser_id = %s", (event_id, user_id,))
+    current_event = cursor.fetchone()
+
+    if not current_event:
+        raise HTTPException (
+            status_code=403,
+            detail={"code": "FORBIDDEN", "message": "You are not the organiser of this event!"},
+        )
+
+    cursor.execute("SELECT users.id, users.name, users.email FROM users INNER JOIN rsvps ON users.id = rsvps.attendee_id WHERE rsvps.event_id = %s ORDER BY users.id", (event_id,))
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return {"attendees": [{"id": row[0], "name": row[1], "email": row[2]} for row in rows]}
+    
