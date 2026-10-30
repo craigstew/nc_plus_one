@@ -1,10 +1,12 @@
 from pydantic import BaseModel
+from typing import Optional
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from connection import connection_db
 from src.auth import get_secret
 from src.user import get_user_by_id
 from src.datetime_check import check_valid_datetime_format
+from datetime import datetime
 import jwt
 
 class CreateEvent(BaseModel):
@@ -13,6 +15,14 @@ class CreateEvent(BaseModel):
     starts_at: str
     ends_at: str
     venue_id: int
+
+class UpdateEvent(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    starts_at: Optional[str] = None
+    ends_at: Optional[str] = None
+    venue_id: Optional[int] = None
+
 
 events_router = APIRouter(prefix="/events", tags=["events"])
 bearer_scheme = HTTPBearer(auto_error=False)
@@ -174,6 +184,76 @@ def create_event(body: CreateEvent, user_id = Depends(get_current_user)):
     cursor.execute("INSERT INTO events (title, description, starts_at, ends_at, organiser_id, venue_id) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *",
                    (body.title, body.description, body.starts_at, body.ends_at, user_id, body.venue_id)
     )
+
+    row = cursor.fetchone()
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return {"event" : {"id": row[0], "title": row[1], "description": row[2], "starts_at": row[3], "ends_at": row[4], "venue_id": row[6], "organiser_id": row[5], "created_at": row[7]}}
+
+
+@events_router.patch("/{event_id}", status_code=200, dependencies=[Depends(get_current_user)])
+def update_event(event_id: int, body: UpdateEvent, user_id = Depends(get_current_user)):
+
+    supplied_fields = body.model_dump(exclude_unset=True)
+
+    if not supplied_fields:
+        raise HTTPException (
+            status_code=400,
+            detail={"code": "BAD_REQUEST", "message": "No fields to update!"},
+        )
+
+    conn = connection_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM events WHERE id = %s", (event_id,))
+    real_event = cursor.fetchone()
+
+    if not real_event:
+        raise HTTPException (
+            status_code=404,
+            detail={"code": "NOT_FOUND", "message": "Event not found!"},
+        )
+
+    cursor.execute("SELECT * FROM events WHERE id = %s AND organiser_id = %s", (event_id, user_id,))
+    current_event = cursor.fetchone()
+
+    if not current_event:
+        raise HTTPException (
+            status_code=403,
+            detail={"code": "FORBIDDEN", "message": "You are not the organiser of this event!"},
+        )
+
+    if body.starts_at and body.ends_at:
+        check_valid_datetime_format(body.starts_at)
+        check_valid_datetime_format(body.ends_at)
+        start = datetime.fromisoformat(body.starts_at)
+        end = datetime.fromisoformat(body.ends_at)
+
+        if start > end:
+            raise HTTPException (
+                status_code=400,
+                detail={"code": "BAD_REQUEST", "message": "Ends_at is before the starts_at!"},
+            )
+
+    if body.venue_id:
+        cursor.execute("SELECT * FROM venues WHERE id = %s", (body.venue_id,))
+        real_venue = cursor.fetchone()
+        
+        if not real_venue:
+            raise HTTPException (
+                status_code=404,
+                detail={"code": "NOT_FOUND", "message": "Venue not found!"},
+            )
+
+    allowed_fields = ["title", "description", "starts_at", "ends_at", "venue_id"]
+    fields = [field for field in supplied_fields if field in allowed_fields]
+    set_clause = ", ".join(f"{field} = %s" for field in fields)
+    values = [supplied_fields[field] for field in fields]
+    values.extend([event_id, user_id])
+
+    cursor.execute(f"UPDATE events SET {set_clause} WHERE id = %s AND organiser_id = %s RETURNING *", tuple(values))
 
     row = cursor.fetchone()
     conn.commit()

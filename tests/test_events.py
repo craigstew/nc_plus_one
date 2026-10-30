@@ -110,3 +110,90 @@ def test_user_creates_event_with_invalid_datetime_format(client, auth_headers):
     assert response.status_code == 400
     assert response.json()["error"]["code"] == "BAD_REQUEST"
     assert response.json()["error"]["message"] == "Datetime doesn't match correct format!"
+
+def test_user_updates_event(client, auth_headers):
+    updated_event = {
+        "title": "Craig's Halloween Party",
+        "description": "LETS PARTYYYYY",
+        "starts_at": "2026-06-18T18:30:00",
+        "ends_at": "2026-07-18T21:00:00",
+        "venue_id": 3
+    }
+
+    response = client.patch("events/1", headers=auth_headers, json=updated_event)
+    assert response.status_code == 200
+    assert response.json()["event"]["title"] == "Craig's Halloween Party"
+    assert response.json()["event"]["description"] == "LETS PARTYYYYY"
+
+def test_user_updates_event_with_missing_token(client):
+    updated_event = {
+        "title": "Craig's Halloween Party",
+        "description": "LETS PARTYYYYY",
+        "starts_at": "2026-06-18T18:30:00",
+        "ends_at": "2026-07-18T21:00:00",
+        "venue_id": 3
+    }
+
+    response = client.patch("events/1", json=updated_event)
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "NOT_AUTHENTICATED"
+    assert response.json()["error"]["message"] == "User not authenticated!"
+
+def test_user_updates_event_not_organiser(client, auth_headers):
+    updated_event = {
+        "title": "Craig's Halloween Party",
+        "description": "LETS PARTYYYYY",
+        "starts_at": "2026-06-18T18:30:00",
+        "ends_at": "2026-07-18T21:00:00",
+        "venue_id": 3
+    }
+
+    response = client.patch("events/2", headers=auth_headers, json=updated_event)
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "FORBIDDEN"
+    assert response.json()["error"]["message"] == "You are not the organiser of this event!"
+
+def test_user_updates_event_thats_not_found(client, auth_headers):
+    updated_event = {
+        "title": "Craig's Halloween Party",
+        "description": "LETS PARTYYYYY",
+        "starts_at": "2026-06-18T18:30:00",
+        "ends_at": "2026-07-18T21:00:00",
+        "venue_id": 3
+    }
+
+    response = client.patch("events/999", headers=auth_headers, json=updated_event)
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "NOT_FOUND"
+    assert response.json()["error"]["message"] == "Event not found!"
+
+def test_user_updates_event_invalid_date_format(client, auth_headers):
+    updated_event = {
+        "title": "Craig's Halloween Party",
+        "description": "LETS PARTYYYYY",
+        "starts_at": "01-01-2026",
+        "ends_at": "02-01-2026",
+        "venue_id": 3
+    }
+
+    response = client.patch("events/1", headers=auth_headers, json=updated_event)
+    assert response.status_code == 400
+    assert response.json()["error"]["code"] == "BAD_REQUEST"
+    assert response.json()["error"]["message"] == "Datetime doesn't match correct format!"
+
+def test_user_updates_event_ends_before_starts(client, auth_headers):
+    updated_event = {
+        "title": "Craig's Halloween Party",
+        "description": "LETS PARTYYYYY",
+        "starts_at": "2026-08-18T18:30:00",
+        "ends_at": "2026-07-18T21:00:00",
+        "venue_id": 3
+    }
+
+    response = client.patch("events/1", headers=auth_headers, json=updated_event)
+    assert response.status_code == 400
+    assert response.json()["error"]["code"] == "BAD_REQUEST"
+    assert response.json()["error"]["message"] == "Ends_at is before the starts_at!"
+
+
+
