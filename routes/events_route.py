@@ -4,7 +4,15 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from connection import connection_db
 from src.auth import get_secret
 from src.user import get_user_by_id
+from src.datetime_check import check_valid_datetime_format
 import jwt
+
+class CreateEvent(BaseModel):
+    title: str
+    description: str
+    starts_at: str
+    ends_at: str
+    venue_id: int
 
 events_router = APIRouter(prefix="/events", tags=["events"])
 bearer_scheme = HTTPBearer(auto_error=False)
@@ -140,3 +148,36 @@ def add_rsvp(event_id: int, user_id = Depends(get_current_user)):
 
 
 
+@events_router.post("", status_code=201, dependencies=[Depends(get_current_user)])
+def create_event(body: CreateEvent, user_id = Depends(get_current_user)):
+
+    if(not body.title or not body.description or not body.starts_at or not body.ends_at or not body.venue_id):
+        raise HTTPException (
+            status_code=400,
+            detail={"code": "BAD_REQUEST", "message": "Either 'title, 'description', 'starts_at', 'ends_at' or 'venue_id' is missing!"},
+        )
+
+    conn = connection_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM venues WHERE id = %s", (body.venue_id,))
+    existing_venue = cursor.fetchone()
+
+    if not existing_venue:
+        raise HTTPException (
+            status_code=404,
+            detail={"code": "NOT_FOUND", "message": "Venue not found!"},
+        )
+
+    check_valid_datetime_format(body.starts_at)
+    check_valid_datetime_format(body.ends_at)
+
+    cursor.execute("INSERT INTO events (title, description, starts_at, ends_at, organiser_id, venue_id) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *",
+                   (body.title, body.description, body.starts_at, body.ends_at, user_id, body.venue_id)
+    )
+
+    row = cursor.fetchone()
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return {"event" : {"id": row[0], "title": row[1], "description": row[2], "starts_at": row[3], "ends_at": row[4], "venue_id": row[6], "organiser_id": row[5], "created_at": row[7]}}
