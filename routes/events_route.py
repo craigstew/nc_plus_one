@@ -1,11 +1,12 @@
+from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from connection import connection_db
 from src.auth import get_secret
+from src.user import get_user_by_id
 import jwt
 
 events_router = APIRouter(prefix="/events", tags=["events"])
-
 bearer_scheme = HTTPBearer(auto_error=False)
 
 def get_current_user(credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme)):
@@ -19,9 +20,18 @@ def get_current_user(credentials: HTTPAuthorizationCredentials | None = Depends(
 
     try:
         payload = jwt.decode(credentials.credentials, get_secret(), "HS256")
+        user_id = int(payload["sub"])
     except:
         raise unauthorised
 
+    user = get_user_by_id(user_id)
+    if user is None:
+        raise HTTPException (
+            status_code=401,
+            detail={"code": "UNAUTHORISED", "message": "Invalid User ID"},
+        )
+
+    return user_id
 
 @events_router.get("", status_code=200, dependencies=[Depends(get_current_user)])
 def list_routes():
@@ -72,3 +82,61 @@ def get_event(event_id: str):
         "capacity": row[7],
         "created_at": row[8].isoformat(),
     }}
+
+
+@events_router.post("/{event_id}/rsvp", status_code=201, dependencies=[Depends(get_current_user)])
+def add_user_to_rsvp(event_id: int, user_id = Depends(get_current_user)):
+
+    conn = connection_db()
+    cursor = conn.cursor()
+
+    cursor.execute(f"SELECT * FROM events where id = {event_id}")
+    existing_event = cursor.fetchone()
+
+    if not existing_event:
+        raise HTTPException (
+            status_code=404,
+            detail={"code": "NOT_FOUND", "message": "Event not found"},
+        )
+
+    cursor.execute(f"SELECT * FROM rsvps WHERE event_id = {event_id} and attendee_id = {user_id}")
+    already_rsvp = cursor.fetchone()
+
+    if already_rsvp:
+        raise HTTPException (
+            status_code=409,
+            detail={"code": "CONFLICT", "message": "User has already RSVPed to this event"},
+        )
+
+    cursor.execute("INSERT INTO rsvps (attendee_id, event_id) VALUES (%s, %s) RETURNING *", (user_id, event_id))
+    new_rsvp = cursor.fetchone()
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return {"rsvps": {"id" : new_rsvp[0], "attendee_id" : new_rsvp[1], "event_id" : new_rsvp[2], "created_at" : new_rsvp[3]}}
+
+
+@events_router.delete("/{event_id}/rsvp/me", status_code=204, dependencies=[Depends(get_current_user)])
+def add_rsvp(event_id: int, user_id = Depends(get_current_user)):
+
+    conn = connection_db()
+    cursor = conn.cursor()
+
+    cursor.execute(f"SELECT * FROM rsvps WHERE event_id = {event_id} and attendee_id = {user_id}")
+    already_rsvp = cursor.fetchone()
+
+    if not already_rsvp:
+        raise HTTPException (
+            status_code=404,
+            detail={"code": "NOT_FOUND", "message": "No RSVP exists for this user on this event"},
+        )
+    
+    cursor.execute("DELETE FROM rsvps WHERE attendee_id = %s AND event_id = %s", (user_id, event_id))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+
+
