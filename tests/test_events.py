@@ -195,5 +195,49 @@ def test_user_updates_event_ends_before_starts(client, auth_headers):
     assert response.json()["error"]["code"] == "BAD_REQUEST"
     assert response.json()["error"]["message"] == "Ends_at is before the starts_at!"
 
+def test_user_checks_own_event(client, auth_headers):
+    expected = {
+        "attendees": [
+            {
+                "id": 3,
+                "name": "Carol Singh",
+                "email": "carol@example.com"
+            },
+            {
+                "id": 5,
+                "name": "Eve Martinez",
+                "email": "eve@example.com"
+            },
+            {
+                "id": 6,
+                "name": "Frank Liu",
+                "email": "frank@example.com"
+            }
+        ]
+    }
+
+    response = client.get("events/4/attendees", headers=auth_headers)
+    assert response.status_code == 200
+    assert response.json() == expected
+
+def test_user_checks_own_event_without_token(client):
+    response = client.get("events/1/attendees")
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "NOT_AUTHENTICATED"
+    assert response.json()["error"]["message"] == "User not authenticated!"
+
+def test_user_checks_others_event(client, auth_headers):
+    response = client.get("events/2/attendees", headers=auth_headers)
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "FORBIDDEN"
+    assert response.json()["error"]["message"] == "You are not the organiser of this event!"
+
+def test_user_checks_not_made_event(client, auth_headers):
+    response = client.get("events/100/attendees", headers=auth_headers)
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "NOT_FOUND"
+    assert response.json()["error"]["message"] == "Event not found!"
+
+
 
 
