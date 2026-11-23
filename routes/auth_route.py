@@ -29,6 +29,12 @@ def login(body: LoginRequest):
 
     user = get_user(body.email)
 
+    if not user:
+        raise HTTPException(
+        status_code=401,
+        detail="Invalid Credentials"
+    )
+
     if verify_password(body.password, user[2]):
         return {
             "access_token": create_access_token(user[0]),
