@@ -6,6 +6,7 @@ from routes.auth_route import auth_router
 from routes.user_route import user_router
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 def seed():
 
@@ -21,6 +22,13 @@ def seed():
 seed()
 
 app = FastAPI(title="Event Booking API", debug=True)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(events_router)
 app.include_router(auth_router)
 app.include_router(user_router)
