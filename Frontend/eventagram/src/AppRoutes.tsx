@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./components/ProtectedRoutes";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./pages/Layout";
 import ProfilePage from "./pages/ProfilePage";
+import EventDetailsPage from "./pages/EventDetailsPage";
 
 export default function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ export default function AppRoutes() {
           <Route element={<Layout />}>
             <Route path="/main" element={<MainPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/events/:id" element={<EventDetailsPage />} />
           </Route>
         </Route>
 

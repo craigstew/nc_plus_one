@@ -1,5 +1,6 @@
 import { CalendarDays, MapPin } from "lucide-react";
 import type { EventData } from "../types";
+import { Link } from "react-router";
 
 interface EventCardProps {
   event: EventData;
@@ -7,7 +8,7 @@ interface EventCardProps {
 
 export default function EventCard({ event }: EventCardProps) {
   return (
-    <div className="event-card">
+    <Link to={`/events/${event.id}`} className="event-card">
       <div className="event-icon">
         <CalendarDays size={25} />
       </div>
@@ -27,6 +28,6 @@ export default function EventCard({ event }: EventCardProps) {
           {event.location}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

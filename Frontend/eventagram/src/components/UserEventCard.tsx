@@ -1,5 +1,6 @@
 import { CalendarDays } from "lucide-react";
 import type { UserEventData } from "../types";
+import { Link } from "react-router";
 
 interface UserEventCardProps {
   event: UserEventData;
@@ -7,7 +8,7 @@ interface UserEventCardProps {
 
 export default function UserEventCard({ event }: UserEventCardProps) {
   return (
-    <div className="event-card">
+    <Link to={`/events/${event.id}`} className="event-card">
       <div className="event-icon">
         <CalendarDays size={25} />
       </div>
@@ -22,6 +23,6 @@ export default function UserEventCard({ event }: UserEventCardProps) {
           })}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

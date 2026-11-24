@@ -14,3 +14,15 @@ export interface EventData {
   ends_at: string;
   location: string;
 }
+
+export interface EventDataSingle {
+  id: number;
+  title: string;
+  description: string;
+  starts_at: string;
+  ends_at: string;
+  location: string;
+  address: string;
+  capacity: number;
+  created_at: string;
+}

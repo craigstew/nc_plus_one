@@ -289,8 +289,6 @@ input {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-/* Centre branding */
-
 .header-brand {
   display: flex;
   flex-direction: column;
@@ -325,7 +323,7 @@ input {
 }
 
 /* =========================
-   PROFILE
+   HEADER PROFILE
 ========================= */
 
 .header-profile {
@@ -351,55 +349,6 @@ input {
 }
 
 /* =========================
-   MOBILE RESPONSIVENESS
-========================= */
-
-@media (max-width: 480px) {
-  .welcome-page h1 {
-    font-size: 38px;
-  }
-
-  .welcome-buttons {
-    flex-direction: column;
-    width: 100%;
-    max-width: 280px;
-  }
-
-  .login-container,
-  .register-container {
-    padding: 30px 22px;
-  }
-
-  .login-container h1,
-  .register-container h1 {
-    font-size: 30px;
-  }
-
-  .header {
-    height: 175px;
-  }
-
-  .header-brand {
-    gap: 14px;
-    transform: translateY(35px);
-  }
-
-  .header-logo {
-    font-size: 29px;
-    letter-spacing: 1px;
-  }
-
-  .header-profile {
-    right: 15px;
-    top: calc(50% + 35px);
-  }
-
-  .header-profile a {
-    font-size: 13px;
-  }
-}
-
-/* =========================
    PROFILE PAGE
 ========================= */
 
@@ -413,8 +362,6 @@ input {
   max-width: 750px;
   margin: 0 auto;
 }
-
-/* Profile information */
 
 .profile-info {
   display: flex;
@@ -455,106 +402,6 @@ input {
   font-size: 21px;
   font-weight: 700;
   margin-bottom: 20px;
-}
-
-.event-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* =========================
-   USER EVENT LIST
-========================= */
-
-.event-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 25px;
-  width: 100%;
-}
-
-/* =========================
-   USER EVENT CARD
-========================= */
-
-.event-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 22px 25px;
-  background-color: white;
-  border: 1px solid #ededf2;
-  border-radius: 14px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
-}
-
-.event-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  border-color: #dcdcff;
-}
-
-/* Event icon */
-
-.event-icon {
-  width: 55px;
-  height: 55px;
-  min-width: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #eeeeff;
-  color: #6366f1;
-  border-radius: 12px;
-}
-
-/* Event information */
-
-.event-details {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.event-details h3 {
-  font-family: "Montserrat", sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: #222;
-}
-
-.event-details p {
-  font-family: "Montserrat", sans-serif;
-  font-size: 13px;
-  color: #777;
-}
-
-/* =========================
-   MOBILE RESPONSIVENESS
-========================= */
-
-@media (max-width: 480px) {
-  .event-card {
-    padding: 16px;
-    gap: 14px;
-  }
-
-  .event-icon {
-    width: 45px;
-    height: 45px;
-    min-width: 45px;
-  }
-
-  .event-details h3 {
-    font-size: 14px;
-  }
-
-  .event-details p {
-    font-size: 12px;
-  }
 }
 
 /* =========================
@@ -613,7 +460,23 @@ input {
   border-radius: 14px;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
+
+  /* Remove default link styling */
+  text-decoration: none;
+  color: inherit;
 }
+
+/* Remove underlines in all link states */
+
+.event-card,
+.event-card:hover,
+.event-card:visited,
+.event-card:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Hover effect */
 
 .event-card:hover {
   transform: translateY(-3px);
@@ -621,9 +484,7 @@ input {
   border-color: #dcdcff;
 }
 
-/* =========================
-   EVENT ICON
-========================= */
+/* Event icon */
 
 .event-icon {
   width: 55px;
@@ -637,9 +498,7 @@ input {
   border-radius: 12px;
 }
 
-/* =========================
-   EVENT DETAILS
-========================= */
+/* Event information */
 
 .event-details {
   display: flex;
@@ -668,10 +527,139 @@ input {
 }
 
 /* =========================
+   EVENT DETAILS PAGE
+========================= */
+
+.event-details-page {
+  min-height: calc(100vh - 200px);
+  padding: 50px 20px;
+  background-color: #f5f5f7;
+}
+
+.event-details-container {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+/* =========================
+   SINGLE EVENT CARD
+========================= */
+
+.event-card-single {
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ededf2;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.event-card-single-content {
+  padding: 35px;
+}
+
+.event-card-single-content h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+
+/* Event description */
+
+.event-description {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+/* =========================
+   EVENT INFORMATION
+========================= */
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  background-color: #f9f9fc;
+  border-radius: 12px;
+}
+
+.event-info p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  color: #555;
+}
+
+.event-info svg {
+  color: #6366f1;
+  flex-shrink: 0;
+}
+
+/* =========================
    MOBILE RESPONSIVENESS
 ========================= */
 
 @media (max-width: 480px) {
+  /* Welcome page */
+
+  .welcome-page h1 {
+    font-size: 38px;
+  }
+
+  .welcome-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  /* Login and register */
+
+  .login-container,
+  .register-container {
+    padding: 30px 22px;
+  }
+
+  .login-container h1,
+  .register-container h1 {
+    font-size: 30px;
+  }
+
+  /* Header */
+
+  .header {
+    height: 175px;
+  }
+
+  .header-brand {
+    gap: 14px;
+    transform: translateY(35px);
+  }
+
+  .header-logo {
+    font-size: 29px;
+    letter-spacing: 1px;
+  }
+
+  .header-profile {
+    right: 15px;
+    top: calc(50% + 35px);
+  }
+
+  .header-profile a {
+    font-size: 13px;
+  }
+
+  /* Main page */
+
   .main-page {
     padding: 30px 16px;
   }
@@ -679,6 +667,8 @@ input {
   .main-container > h1 {
     font-size: 24px;
   }
+
+  /* Event cards */
 
   .event-card {
     padding: 16px;
@@ -696,6 +686,33 @@ input {
   }
 
   .event-details p {
+    font-size: 12px;
+  }
+
+  /* Event details page */
+
+  .event-details-page {
+    padding: 30px 16px;
+  }
+
+  .event-card-single-content {
+    padding: 24px 20px;
+  }
+
+  .event-card-single-content h1 {
+    font-size: 21px;
+  }
+
+  .event-description {
+    font-size: 13px;
+  }
+
+  .event-info {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .event-info p {
     font-size: 12px;
   }
 }
