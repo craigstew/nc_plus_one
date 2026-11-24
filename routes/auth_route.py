@@ -38,7 +38,12 @@ def login(body: LoginRequest):
     if verify_password(body.password, user[2]):
         return {
             "access_token": create_access_token(user[0]),
-            "token_type": "bearer"
+            "token_type": "bearer",
+            "user": {
+                "id": user[0],
+                "email": user[1],
+                "name": user[3]
+            }
         }
     else:
         raise HTTPException (

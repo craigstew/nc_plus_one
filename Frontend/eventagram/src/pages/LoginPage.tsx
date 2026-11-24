@@ -15,7 +15,6 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      return <Navigate to="/main" />;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     }
