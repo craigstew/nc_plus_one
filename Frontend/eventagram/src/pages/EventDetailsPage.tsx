@@ -11,7 +11,6 @@ type EventState =
 
 export default function EventDetailsPage() {
   const { id } = useParams();
-
   const { token } = useAuth();
 
   const [eventState, setEventState] = useState<EventState>({
@@ -22,7 +21,7 @@ export default function EventDetailsPage() {
     const fetchEvent = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_BACKEND_URL}/events/${id}`,
+          import.meta.env.VITE_API_BACKEND_URL + `/events/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

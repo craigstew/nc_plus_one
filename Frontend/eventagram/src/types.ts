@@ -26,3 +26,11 @@ export interface EventDataSingle {
   capacity: number;
   created_at: string;
 }
+
+export interface CreateEventData {
+  title: string;
+  description: string;
+  starts_at: string;
+  ends_at: string;
+  venue_id: number;
+}

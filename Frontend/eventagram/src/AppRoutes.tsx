@@ -11,6 +11,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Layout from "./pages/Layout";
 import ProfilePage from "./pages/ProfilePage";
 import EventDetailsPage from "./pages/EventDetailsPage";
+import CreateEvent from "./pages/CreateEvent";
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
             <Route path="/main" element={<MainPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/events/:id" element={<EventDetailsPage />} />
+            <Route path="/events/create" element={<CreateEvent />} />
           </Route>
         </Route>
 

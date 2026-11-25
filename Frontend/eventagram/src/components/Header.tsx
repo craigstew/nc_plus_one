@@ -1,7 +1,16 @@
-import { UserRound } from "lucide-react";
-import { Link } from "react-router";
+import { UserRound, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate("/login");
+  }
+
   return (
     <header className="header">
       <div className="header-brand">
@@ -19,6 +28,11 @@ export default function Header() {
           <UserRound size={18} strokeWidth={2} />
           <span>Profile</span>
         </Link>
+
+        <button onClick={handleLogout} className="header-logout">
+          <LogOut size={18} strokeWidth={2} />
+          <span>Logout</span>
+        </button>
       </div>
     </header>
   );

@@ -1,8 +1,10 @@
-import { UserRound } from "lucide-react";
+import { Plus, UserRound } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import type { UserEventData } from "../types";
 import UserEventList from "../components/UserEventList";
+import { Link } from "react-router";
+import { getUserEvents } from "../api/userEvents";
 
 export type EventState =
   | { status: "loading" }
@@ -19,21 +21,12 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUserEvents = async () => {
       try {
-        const response = await fetch(
-          import.meta.env.VITE_API_BACKEND_URL + "/user/me/events",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const events = await getUserEvents(token!);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch your events");
-        }
-
-        const data = await response.json();
-        setEventState({ status: "success", events: data.events });
+        setEventState({
+          status: "success",
+          events,
+        });
       } catch (err) {
         setEventState({
           status: "error",
@@ -41,6 +34,7 @@ export default function ProfilePage() {
         });
       }
     };
+
     if (token) {
       fetchUserEvents();
     }
@@ -59,6 +53,13 @@ export default function ProfilePage() {
           <h1>{user?.name}</h1>
 
           <p>{events.length} events upcoming</p>
+        </div>
+
+        <div className="create-event">
+          <Link to="/events/create" className="create-event-button">
+            <Plus size={18} />
+            Create Event
+          </Link>
         </div>
 
         <div className="upcoming-events">

@@ -21,7 +21,9 @@ body {
 }
 
 button,
-input {
+input,
+textarea,
+select {
   font-family: inherit;
 }
 
@@ -158,17 +160,27 @@ input {
   color: #333;
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea,
+.form-group select {
   width: 100%;
   padding: 13px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
   background-color: #fff;
+  color: #222;
   transition: 0.2s ease;
 }
 
-.form-group input:focus {
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
   outline: none;
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
@@ -211,6 +223,17 @@ input {
 .login-container a:hover,
 .register-container a:hover {
   text-decoration: underline;
+}
+
+/* =========================
+   ERROR MESSAGES
+========================= */
+
+.error {
+  color: #dc2626;
+  font-size: 14px;
+  margin-bottom: 15px;
+  line-height: 1.5;
 }
 
 /* =========================
@@ -323,7 +346,7 @@ input {
 }
 
 /* =========================
-   HEADER PROFILE
+   HEADER PROFILE & LOGOUT
 ========================= */
 
 .header-profile {
@@ -331,6 +354,10 @@ input {
   right: 35px;
   top: calc(50% + 35px);
   transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
 }
 
 .header-profile a {
@@ -346,6 +373,26 @@ input {
 
 .header-profile a:hover {
   color: #6366f1;
+}
+
+.header-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.header-logout:hover {
+  color: #b91c1c;
 }
 
 /* =========================
@@ -395,7 +442,46 @@ input {
   font-size: 15px;
 }
 
-/* Upcoming events */
+/* =========================
+   CREATE EVENT BUTTON
+========================= */
+
+.create-event {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0 55px;
+}
+
+.create-event-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 20px;
+  background-color: #6366f1;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.create-event-button:hover {
+  background-color: #4f46e5;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   UPCOMING EVENTS
+========================= */
+
+.upcoming-events {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
 .upcoming-events h2 {
   font-family: "Montserrat", sans-serif;
@@ -460,13 +546,9 @@ input {
   border-radius: 14px;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
-
-  /* Remove default link styling */
   text-decoration: none;
   color: inherit;
 }
-
-/* Remove underlines in all link states */
 
 .event-card,
 .event-card:hover,
@@ -476,15 +558,11 @@ input {
   color: inherit;
 }
 
-/* Hover effect */
-
 .event-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   border-color: #dcdcff;
 }
-
-/* Event icon */
 
 .event-icon {
   width: 55px;
@@ -497,8 +575,6 @@ input {
   color: #6366f1;
   border-radius: 12px;
 }
-
-/* Event information */
 
 .event-details {
   display: flex;
@@ -605,6 +681,191 @@ input {
 }
 
 /* =========================
+   RSVP AND WITHDRAW BUTTONS
+========================= */
+
+.event-rsvp {
+  margin-top: 25px;
+  width: 100%;
+}
+
+.event-rsvp button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #6366f1;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.event-rsvp button:hover {
+  background-color: #4f46e5;
+  transform: translateY(-2px);
+}
+
+.event-rsvp button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Withdraw button */
+
+.event-rsvp .withdraw-button {
+  background-color: #dc2626;
+}
+
+.event-rsvp .withdraw-button:hover {
+  background-color: #b91c1c;
+}
+
+/* RSVP status messages */
+
+.event-rsvp p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.rsvp-success {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.event-rsvp .error {
+  color: #dc2626;
+  margin-top: 12px;
+}
+
+/* =========================
+   CREATE EVENT PAGE
+========================= */
+
+.create-event-page {
+  min-height: calc(100vh - 200px);
+  padding: 50px 20px;
+  background-color: #f5f5f7;
+}
+
+.create-event-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 35px;
+  background-color: white;
+  border: 1px solid #ededf2;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* Create event heading */
+
+.create-event-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 10px 0 30px;
+}
+
+.create-event-heading > svg {
+  color: #6366f1;
+  margin-bottom: 15px;
+}
+
+.create-event-heading h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 27px;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.create-event-heading p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  color: #777;
+  line-height: 1.6;
+}
+
+/* Create event form */
+
+.create-event-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-event-container .form-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.create-event-container .form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.create-event-container .form-group input,
+.create-event-container .form-group textarea,
+.create-event-container .form-group select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #222;
+  transition: 0.2s ease;
+}
+
+.create-event-container .form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.create-event-container .form-group input:focus,
+.create-event-container .form-group textarea:focus,
+.create-event-container .form-group select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Create event submit button */
+
+.create-event-container button {
+  width: 100%;
+  padding: 14px;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  margin-top: 5px;
+}
+
+.create-event-container button:hover {
+  background-color: #4f46e5;
+}
+
+.create-event-container button:disabled {
+  background-color: #a5a6f6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================
    MOBILE RESPONSIVENESS
 ========================= */
 
@@ -652,10 +913,47 @@ input {
   .header-profile {
     right: 15px;
     top: calc(50% + 35px);
+    gap: 10px;
   }
 
   .header-profile a {
     font-size: 13px;
+  }
+
+  .header-logout {
+    font-size: 12px;
+  }
+
+  /* Profile page */
+
+  .profile-page {
+    padding: 35px 16px;
+  }
+
+  .profile-info {
+    margin-bottom: 35px;
+  }
+
+  .profile-picture {
+    width: 105px;
+    height: 105px;
+  }
+
+  .profile-info h1 {
+    font-size: 23px;
+  }
+
+  .upcoming-events h2 {
+    font-size: 19px;
+  }
+
+  .create-event {
+    margin: 25px 0 45px;
+  }
+
+  .create-event-button {
+    padding: 9px 18px;
+    font-size: 12px;
   }
 
   /* Main page */
@@ -714,5 +1012,39 @@ input {
 
   .event-info p {
     font-size: 12px;
+  }
+
+  /* RSVP buttons */
+
+  .event-rsvp {
+    margin-top: 20px;
+  }
+
+  .event-rsvp button {
+    padding: 13px;
+    font-size: 14px;
+  }
+
+  /* Create event page */
+
+  .create-event-page {
+    padding: 30px 16px;
+  }
+
+  .create-event-container {
+    padding: 24px 20px;
+  }
+
+  .create-event-heading h1 {
+    font-size: 23px;
+  }
+
+  .create-event-heading p {
+    font-size: 13px;
+  }
+
+  .create-event-container .form-group input,
+  .create-event-container .form-group textarea {
+    padding: 12px;
   }
 }

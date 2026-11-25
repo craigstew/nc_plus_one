@@ -1,11 +1,17 @@
 import { CalendarDays, Clock, MapPin, Users } from "lucide-react";
 import type { EventDataSingle } from "../types";
+import { useRSVP } from "../hooks/useRSVP";
+import RSVPButton from "./RSVPButton";
+import WithdrawButton from "./WithdrawButton";
 
 interface EventCardSingleProps {
   event: EventDataSingle;
 }
 
 export default function EventCardSingle({ event }: EventCardSingleProps) {
+  const { rsvpState, isRegistered, isChecking, handleRSVP, handleWithdraw } =
+    useRSVP(event.id);
+
   return (
     <div className="event-card-single">
       <div className="event-card-single-content">
@@ -37,12 +43,25 @@ export default function EventCardSingle({ event }: EventCardSingleProps) {
             {event.location}
           </p>
 
-          {event.address && <p>{event.address}</p>}
+          {event.address ? <p>{event.address}</p> : <p>No Current Address</p>}
 
           <p>
             <Users size={18} />
             Capacity: {event.capacity}
           </p>
+        </div>
+
+        <div className="event-rsvp">
+          {isChecking ? (
+            <p>Checking RSVP status...</p>
+          ) : isRegistered ? (
+            <WithdrawButton
+              rsvpState={rsvpState}
+              handleWithdraw={handleWithdraw}
+            />
+          ) : (
+            <RSVPButton rsvpState={rsvpState} handleRSVP={handleRSVP} />
+          )}
         </div>
       </div>
     </div>
