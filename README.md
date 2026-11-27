@@ -1,20 +1,42 @@
-# NORTHCODERS PROJECT 1 - Craig Stewart
 
-## SETUP
-### Create your own environment.
-python -m venv .venv
-### Install Projects Dependencies
-pip install -r requirements.txt
-### Run Python Script for Database Creation
-python main.py
+# Northcoders Project 1 – Craig Stewart
 
+## ⚙️ Setup
 
-## View Database
-### Enter PSQL
-psql
-### Connect to "nc_plus_one" Database
-\c nc_plus_one
-### View Database Tables
-\dt
-### Viewing Table Data
-SELECT * FROM {Table Name You Want to See!}
+1. **Create a virtual environment**
+   ```bash
+   python -m venv .venv
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Create the database**
+   ```bash
+   python main.py
+   ```
+
+## 🗄️ Viewing the Database
+
+1. **Open PostgreSQL**
+   ```bash
+   psql
+   ```
+
+2. **Connect to the database**
+   ```sql
+   \c nc_plus_one
+   ```
+
+3. **View available tables**
+   ```sql
+   \dt
+   ```
+
+4. **View table contents**
+   ```sql
+   SELECT * FROM table_name;
+   ```
+   Replace `table_name` with the name of the table you want to view.
