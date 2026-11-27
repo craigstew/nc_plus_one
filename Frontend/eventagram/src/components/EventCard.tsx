@@ -25,7 +25,7 @@ export default function EventCard({ event }: EventCardProps) {
 
         <p className="event-location">
           <MapPin size={14} />
-          {event.location ? <p>{event.location}</p> : <p>No Location</p>}
+          {event.location || "No Location"}
         </p>
       </div>
     </Link>

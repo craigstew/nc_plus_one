@@ -20,6 +20,7 @@ export function useRSVP(eventId: number) {
 
   useEffect(() => {
     async function checkRSVP() {
+      setIsChecking(true);
       try {
         const events = await getUserEvents(token!);
         const registered = events.some((userEvent) => userEvent.id === eventId);

@@ -74,7 +74,7 @@ def get_event(event_id: str):
     cursor = conn.cursor()
     cursor.execute(
         """
-        SELECT events.id, events.title, events.description, events.starts_at, events.ends_at, venues.name, venues.address, venues.capacity, events.created_at  
+        SELECT events.id, events.title, events.description, events.starts_at, events.ends_at, venues.name, venues.address, venues.capacity, events.created_at, events.venue_id  
         FROM events
         INNER JOIN venues ON events.venue_id = venues.id
         WHERE events.id = %s
@@ -99,6 +99,7 @@ def get_event(event_id: str):
         "address": row[6],
         "capacity": row[7],
         "created_at": row[8].isoformat(),
+        "venue_id": row[9],
     }}
 
 

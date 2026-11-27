@@ -12,6 +12,7 @@ import Layout from "./pages/Layout";
 import ProfilePage from "./pages/ProfilePage";
 import EventDetailsPage from "./pages/EventDetailsPage";
 import CreateEvent from "./pages/CreateEvent";
+import EditEvent from "./pages/EditEvent";
 
 export default function AppRoutes() {
   return (
@@ -27,6 +28,7 @@ export default function AppRoutes() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/events/:id" element={<EventDetailsPage />} />
             <Route path="/events/create" element={<CreateEvent />} />
+            <Route path="/events/:id/edit" element={<EditEvent />} />
           </Route>
         </Route>
 

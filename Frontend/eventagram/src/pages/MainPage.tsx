@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import EventList from "../components/EventList";
 import type { EventData } from "../types";
+import { getEvents } from "../api/events";
 
 export type EventState =
   | { status: "loading" }
@@ -18,21 +19,9 @@ export default function MainPage() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch(
-          import.meta.env.VITE_API_BACKEND_URL + "/events",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const events = await getEvents(token!);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch events");
-        }
-
-        const data = await response.json();
-        setEventState({ status: "success", events: data.events });
+        setEventState({ status: "success", events });
       } catch (err) {
         setEventState({
           status: "error",

@@ -1,11 +1,55 @@
+/* =====================================================
+   EVENTAGRAM — NEW DESIGN SYSTEM
+   PART 1: FOUNDATION, AUTH, NAVIGATION & DISCOVERY
+===================================================== */
+
 /* =========================
-   GOOGLE FONTS
+   1. FONTS
 ========================= */
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap");
 
 /* =========================
-   GLOBAL STYLES
+   2. COLOUR VARIABLES
+========================= */
+
+:root {
+  --primary: #6854e8;
+  --primary-dark: #5140cc;
+  --primary-light: #eeeaff;
+  --primary-soft: #f6f4ff;
+
+  --background: #f7f8fc;
+  --surface: #ffffff;
+  --surface-hover: #fafaff;
+
+  --text: #202039;
+  --text-secondary: #77788e;
+  --text-muted: #a1a1b5;
+
+  --border: #e9e9f1;
+  --border-dark: #dedee9;
+
+  --success: #16a36a;
+  --success-bg: #eaf8f1;
+
+  --danger: #e34d5b;
+  --danger-bg: #fff0f1;
+
+  --shadow-sm: 0 2px 8px rgba(35, 30, 80, 0.04);
+  --shadow-md: 0 8px 25px rgba(35, 30, 80, 0.07);
+  --shadow-lg: 0 18px 50px rgba(35, 30, 80, 0.11);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+
+  --transition: all 0.25s ease;
+}
+
+/* =========================
+   3. GLOBAL STYLES
 ========================= */
 
 * {
@@ -14,10 +58,15 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f5f5f7;
-  color: #222;
+  font-family: "Inter", sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -27,25 +76,33 @@ select {
   font-family: inherit;
 }
 
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
 .page {
   min-height: 100vh;
 }
 
 /* =========================
-   EVENTAGRAM BRANDING
+   4. BRANDING
 ========================= */
 
 .welcome-page h1,
 .login-container h1,
 .register-container h1,
 .header-logo {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-weight: 800;
-  letter-spacing: 1px;
+  letter-spacing: -1.5px;
 }
 
 /* =========================
-   WELCOME PAGE
+   5. WELCOME PAGE
 ========================= */
 
 .welcome-page {
@@ -55,55 +112,66 @@ select {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 20px;
+  padding: 30px 20px;
+
+  background:
+    radial-gradient(circle at 15% 20%, #e8e2ff 0, transparent 35%),
+    radial-gradient(circle at 85% 80%, #e5eaff 0, transparent 35%), #fafaff;
 }
 
 .welcome-page h1 {
-  font-size: 52px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
-  color: #222;
+  font-size: clamp(42px, 7vw, 68px);
+  font-weight: 900;
+  letter-spacing: -3px;
+  margin-bottom: 18px;
+
+  background: linear-gradient(135deg, #5140cc, #9079ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .welcome-page p {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 16px;
-  margin-bottom: 30px;
+  line-height: 1.7;
+  margin-bottom: 35px;
 }
 
 .welcome-buttons {
   display: flex;
-  gap: 15px;
+  gap: 14px;
 }
 
 .welcome-buttons a {
-  padding: 13px 35px;
-  border-radius: 8px;
+  min-width: 145px;
+  padding: 14px 28px;
+  border-radius: 12px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 15px;
-  transition: 0.2s ease;
+  font-size: 14px;
+  font-weight: 700;
+  transition: var(--transition);
 }
 
 .welcome-buttons a:first-child {
-  background-color: #6366f1;
+  background: linear-gradient(135deg, #7965f2, #5945dc);
   color: white;
+  box-shadow: 0 6px 18px rgba(104, 84, 232, 0.25);
 }
 
 .welcome-buttons a:last-child {
-  background-color: white;
-  color: #6366f1;
-  border: 1px solid #6366f1;
+  background: white;
+  color: var(--primary);
+  border: 1px solid var(--border-dark);
 }
 
 .welcome-buttons a:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
 /* =========================
-   LOGIN & REGISTER PAGES
+   6. LOGIN & REGISTER
 ========================= */
 
 .login-page,
@@ -112,111 +180,134 @@ select {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-color: #f5f5f7;
+  padding: 25px;
+
+  background:
+    radial-gradient(circle at 10% 10%, #eae5ff 0, transparent 35%),
+    radial-gradient(circle at 90% 90%, #e7edff 0, transparent 35%),
+    var(--background);
 }
 
 .login-container,
 .register-container {
   width: 100%;
-  max-width: 420px;
-  background-color: white;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  max-width: 440px;
+  padding: 45px 40px;
+
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-xl);
+
+  box-shadow: var(--shadow-lg);
   text-align: center;
 }
 
 .login-container h1,
 .register-container h1 {
   font-size: 34px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-  color: #222;
+  letter-spacing: -1.5px;
+  margin-bottom: 15px;
+  color: var(--primary);
 }
 
 .login-container > p,
 .register-container > p {
-  color: #777;
+  color: var(--text-secondary);
   font-size: 14px;
-  margin-bottom: 15px;
+  line-height: 1.7;
+  margin-bottom: 12px;
 }
 
 /* =========================
-   FORM STYLING
+   7. FORMS
 ========================= */
 
 .form-group {
   text-align: left;
+  margin-top: 22px;
   margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 9px;
+  color: var(--text);
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 13px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 14px 15px;
+
+  border: 1px solid var(--border-dark);
+  border-radius: 11px;
+
   font-size: 14px;
-  background-color: #fff;
-  color: #222;
-  transition: 0.2s ease;
+  background: #fcfcff;
+  color: var(--text);
+
+  outline: none;
+  transition: var(--transition);
 }
 
-.form-group textarea {
-  min-height: 120px;
-  resize: vertical;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #b0b0bf;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(104, 84, 232, 0.1);
+}
+
+.form-group textarea {
+  min-height: 130px;
+  resize: vertical;
 }
 
 /* =========================
-   FORM BUTTONS
+   8. AUTH BUTTONS
 ========================= */
 
 .login-container button,
 .register-container button {
   width: 100%;
-  padding: 13px;
-  background-color: #6366f1;
+  padding: 15px;
+  margin-top: 8px;
+
+  background: linear-gradient(135deg, #7965f2, #5945dc);
   color: white;
+
   border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
+  border-radius: 11px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow: 0 5px 15px rgba(104, 84, 232, 0.2);
+  transition: var(--transition);
 }
 
 .login-container button:hover,
 .register-container button:hover {
-  background-color: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(104, 84, 232, 0.3);
 }
 
 /* =========================
-   LINKS
+   9. LINKS & ERRORS
 ========================= */
 
 .login-container a,
 .register-container a {
-  color: #6366f1;
-  font-weight: 600;
+  color: var(--primary);
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -225,19 +316,15 @@ select {
   text-decoration: underline;
 }
 
-/* =========================
-   ERROR MESSAGES
-========================= */
-
 .error {
-  color: #dc2626;
-  font-size: 14px;
-  margin-bottom: 15px;
-  line-height: 1.5;
+  color: var(--danger);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 12px 0;
 }
 
 /* =========================
-   NOT FOUND PAGE
+   10. NOT FOUND PAGE
 ========================= */
 
 .notfound-page {
@@ -245,168 +332,167 @@ select {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-color: #f5f5f7;
+  padding: 25px;
+  background: var(--background);
 }
 
 .notfound-container {
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
+  padding: 55px 40px;
   text-align: center;
-  background-color: white;
-  padding: 50px 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
 }
 
 .notfound-container h1 {
-  font-size: 100px;
-  font-weight: 800;
-  color: #6366f1;
-  letter-spacing: 4px;
-  margin-bottom: 10px;
+  font-family: "Manrope", sans-serif;
+  font-size: 110px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--primary);
+  margin-bottom: 20px;
 }
 
 .notfound-container h2 {
-  font-size: 24px;
-  color: #222;
-  margin-bottom: 15px;
+  font-size: 23px;
+  margin-bottom: 14px;
 }
 
 .notfound-container p {
-  font-size: 15px;
-  color: #777;
-  line-height: 1.6;
-  margin-bottom: 30px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 28px;
 }
 
 .notfound-button {
   display: inline-block;
-  padding: 13px 30px;
-  background-color: #6366f1;
+  padding: 14px 28px;
+  background: var(--primary);
   color: white;
-  border-radius: 8px;
+  border-radius: 11px;
   text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  transition: 0.2s ease;
+  font-size: 14px;
+  font-weight: 700;
+  transition: var(--transition);
 }
 
 .notfound-button:hover {
-  background-color: #4f46e5;
+  background: var(--primary-dark);
   transform: translateY(-2px);
 }
 
 /* =========================
-   HEADER
+   11. HEADER
 ========================= */
 
 .header {
   width: 100%;
-  height: 200px;
-  background-color: #e8e8ed;
+  min-height: 100px;
+  padding: 20px 7%;
+
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+
   position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: white;
+  border-bottom: 1px solid var(--border);
+
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
 }
 
 .header-brand {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: 14px;
-  transform: translateY(35px);
+  gap: 5px;
 }
 
 .header-logo {
-  font-size: 38px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: #222;
+  font-size: 29px;
+  color: var(--primary);
   text-decoration: none;
+  letter-spacing: -1.5px;
 }
 
 .header-nav {
-  margin-top: 0;
+  display: flex;
+  gap: 20px;
 }
 
 .header-nav a {
-  font-size: 15px;
+  color: var(--text-secondary);
+  font-size: 13px;
   font-weight: 600;
-  color: #6366f1;
   text-decoration: none;
-  transition: 0.2s ease;
+  transition: var(--transition);
 }
 
 .header-nav a:hover {
-  color: #4f46e5;
+  color: var(--primary);
 }
 
 /* =========================
-   HEADER PROFILE & LOGOUT
+   12. HEADER PROFILE
 ========================= */
 
 .header-profile {
-  position: absolute;
-  right: 35px;
-  top: calc(50% + 35px);
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 14px;
-}
-
-.header-profile a {
   display: flex;
   align-items: center;
-  gap: 7px;
-  color: #333;
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.2s ease;
+  gap: 24px;
 }
 
-.header-profile a:hover {
-  color: #6366f1;
-}
-
+.header-profile a,
 .header-logout {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 0;
-  background: none;
+  gap: 8px;
+
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: var(--transition);
+}
+
+.header-profile a {
+  color: var(--text);
+}
+
+.header-profile a:hover {
+  color: var(--primary);
+}
+
+.header-logout {
+  background: var(--danger-bg);
+  color: var(--danger);
   border: none;
-  color: #dc2626;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  transition: 0.2s ease;
+  padding: 10px 14px;
+  border-radius: 9px;
 }
 
 .header-logout:hover {
-  color: #b91c1c;
+  background: #ffe0e3;
 }
 
 /* =========================
-   PROFILE PAGE
+   13. PROFILE PAGE
 ========================= */
 
 .profile-page {
-  min-height: calc(100vh - 200px);
-  padding: 50px 20px;
-  background-color: #f5f5f7;
+  min-height: calc(100vh - 100px);
+  padding: 55px 20px 80px;
+  background: var(--background);
 }
 
 .profile-container {
-  max-width: 750px;
+  max-width: 850px;
   margin: 0 auto;
 }
 
@@ -415,65 +501,77 @@ select {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 45px;
+  margin-bottom: 35px;
 }
 
 .profile-picture {
-  width: 125px;
-  height: 125px;
+  width: 115px;
+  height: 115px;
   border-radius: 50%;
-  background-color: #e1e1e8;
-  color: #777784;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 18px;
+
+  background: linear-gradient(135deg, #eeeaff, #ddd6ff);
+  color: var(--primary);
+
+  border: 5px solid white;
+  box-shadow: var(--shadow-md);
+
+  margin-bottom: 20px;
 }
 
 .profile-info h1 {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 27px;
   font-weight: 800;
   margin-bottom: 8px;
 }
 
 .profile-info p {
-  color: #777;
-  font-size: 15px;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 /* =========================
-   CREATE EVENT BUTTON
+   14. CREATE EVENT BUTTON
 ========================= */
 
 .create-event {
   display: flex;
   justify-content: center;
-  margin: 30px 0 55px;
+  margin: 25px 0 50px;
 }
 
 .create-event-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 10px 20px;
-  background-color: #6366f1;
+  gap: 9px;
+
+  padding: 13px 22px;
+
+  background: linear-gradient(135deg, #7965f2, #5945dc);
   color: white;
-  border-radius: 8px;
+
+  border-radius: 11px;
   text-decoration: none;
+
   font-size: 13px;
-  font-weight: 600;
-  transition: 0.2s ease;
+  font-weight: 700;
+
+  box-shadow: 0 5px 15px rgba(104, 84, 232, 0.2);
+  transition: var(--transition);
 }
 
 .create-event-button:hover {
-  background-color: #4f46e5;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 9px 22px rgba(104, 84, 232, 0.28);
 }
 
 /* =========================
-   UPCOMING EVENTS
+   15. UPCOMING EVENTS
 ========================= */
 
 .upcoming-events {
@@ -484,44 +582,45 @@ select {
 }
 
 .upcoming-events h2 {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 21px;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 20px;
 }
 
 /* =========================
-   MAIN PAGE
+   16. MAIN PAGE
 ========================= */
 
 .main-page {
-  min-height: calc(100vh - 115px);
-  padding: 45px 20px;
-  background-color: #f5f5f7;
+  min-height: calc(100vh - 100px);
+  padding: 55px 25px 80px;
+  background: var(--background);
 }
 
 .main-container {
-  max-width: 850px;
+  max-width: 950px;
   margin: 0 auto;
 }
 
 .main-container > h1 {
-  font-family: "Montserrat", sans-serif;
-  font-size: 30px;
+  font-family: "Manrope", sans-serif;
+  font-size: 34px;
   font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text);
   margin-bottom: 10px;
-  color: #222;
 }
 
 .main-container > p {
-  font-family: "Montserrat", sans-serif;
-  color: #777;
+  color: var(--text-secondary);
   font-size: 14px;
-  margin-bottom: 25px;
+  line-height: 1.7;
+  margin-bottom: 30px;
 }
 
 /* =========================
-   EVENT LIST
+   17. EVENT LIST
 ========================= */
 
 .event-list {
@@ -533,21 +632,26 @@ select {
 }
 
 /* =========================
-   EVENT CARD
+   18. EVENT CARDS
 ========================= */
 
 .event-card {
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 22px 25px;
-  background-color: white;
-  border: 1px solid #ededf2;
-  border-radius: 14px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
+
+  padding: 23px 25px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+
   text-decoration: none;
-  color: inherit;
+  color: var(--text);
+
+  transition: var(--transition);
 }
 
 .event-card,
@@ -559,241 +663,320 @@ select {
 }
 
 .event-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  border-color: #dcdcff;
+  transform: translateY(-4px);
+  border-color: #d5ceff;
+  box-shadow: var(--shadow-md);
+  background: var(--surface-hover);
 }
 
 .event-icon {
-  width: 55px;
-  height: 55px;
-  min-width: 55px;
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #eeeeff;
-  color: #6366f1;
-  border-radius: 12px;
+
+  background: var(--primary-light);
+  color: var(--primary);
+
+  border-radius: 15px;
 }
 
 .event-details {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 9px;
+  min-width: 0;
 }
 
 .event-details h3 {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 16px;
-  font-weight: 700;
-  color: #222;
+  font-weight: 800;
+  color: var(--text);
 }
 
 .event-details p {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-family: "Montserrat", sans-serif;
+  gap: 7px;
+
   font-size: 13px;
-  color: #777;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .event-location {
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
+/* =====================================================
+   EVENTAGRAM — NEW DESIGN SYSTEM
+   PART 2: EVENT DETAILS, RSVP & RESPONSIVENESS
+===================================================== */
+
 /* =========================
-   EVENT DETAILS PAGE
+   19. EVENT DETAILS PAGE
 ========================= */
 
 .event-details-page {
-  min-height: calc(100vh - 200px);
-  padding: 50px 20px;
-  background-color: #f5f5f7;
+  min-height: calc(100vh - 100px);
+  padding: 55px 25px 80px;
+  background: var(--background);
 }
 
 .event-details-container {
-  max-width: 850px;
+  max-width: 950px;
   margin: 0 auto;
 }
 
 /* =========================
-   SINGLE EVENT CARD
+   20. SINGLE EVENT CARD
 ========================= */
 
 .event-card-single {
   width: 100%;
-  background-color: white;
-  border: 1px solid #ededf2;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
 }
 
 .event-card-single-content {
-  padding: 35px;
+  padding: 42px;
 }
 
 .event-card-single-content h1 {
-  font-family: "Montserrat", sans-serif;
-  font-size: 28px;
+  font-family: "Manrope", sans-serif;
+  font-size: 32px;
   font-weight: 800;
-  color: #222;
+  letter-spacing: -0.8px;
+  line-height: 1.35;
+  color: var(--text);
   margin-bottom: 18px;
-  line-height: 1.4;
 }
 
-/* Event description */
+/* =========================
+   21. EVENT DESCRIPTION
+========================= */
 
 .event-description {
-  font-family: "Montserrat", sans-serif;
   font-size: 14px;
-  line-height: 1.8;
-  color: #777;
+  line-height: 1.9;
+  color: var(--text-secondary);
   margin-bottom: 30px;
 }
 
 /* =========================
-   EVENT INFORMATION
+   22. EVENT INFORMATION
 ========================= */
 
 .event-info {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 22px;
-  background-color: #f9f9fc;
-  border-radius: 12px;
+  gap: 19px;
+
+  padding: 25px;
+
+  background: #f8f7ff;
+  border: 1px solid #efedff;
+  border-radius: var(--radius-lg);
 }
 
 .event-info p {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-family: "Montserrat", sans-serif;
+  gap: 13px;
+
   font-size: 14px;
-  color: #555;
+  line-height: 1.6;
+  color: #55556e;
 }
 
 .event-info svg {
-  color: #6366f1;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
 /* =========================
-   RSVP AND WITHDRAW BUTTONS
+   23. EVENT ATTENDEES
+========================= */
+
+.event-attendees {
+  margin-top: 25px;
+  padding: 25px;
+
+  background: #f4f4f8;
+  border: 1px solid #e7e7ef;
+  border-radius: var(--radius-lg);
+
+  transition: var(--transition);
+}
+
+.event-attendees h2 {
+  font-family: "Manrope", sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.event-attendees p {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.event-attendees p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================
+   24. RSVP SECTION
 ========================= */
 
 .event-rsvp {
-  margin-top: 25px;
   width: 100%;
+  margin-top: 28px;
 }
 
 .event-rsvp button {
   width: 100%;
-  padding: 15px;
+  padding: 16px;
+
   border: none;
-  border-radius: 10px;
-  background-color: #6366f1;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #7965f2, #5945dc);
   color: white;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  box-shadow: 0 5px 16px rgba(104, 84, 232, 0.2);
+
+  transition: var(--transition);
 }
 
 .event-rsvp button:hover {
-  background-color: #4f46e5;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 9px 23px rgba(104, 84, 232, 0.3);
 }
 
 .event-rsvp button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
-/* Withdraw button */
+/* =========================
+   25. WITHDRAW BUTTON
+========================= */
 
 .event-rsvp .withdraw-button {
-  background-color: #dc2626;
+  background: linear-gradient(135deg, #ee6570, #d83f50);
+  box-shadow: 0 5px 16px rgba(227, 77, 91, 0.17);
 }
 
 .event-rsvp .withdraw-button:hover {
-  background-color: #b91c1c;
+  background: linear-gradient(135deg, #e34d5b, #c52e40);
+  box-shadow: 0 9px 23px rgba(227, 77, 91, 0.25);
 }
 
-/* RSVP status messages */
+/* =========================
+   26. RSVP MESSAGES
+========================= */
 
 .event-rsvp p {
-  font-family: "Montserrat", sans-serif;
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.7;
   text-align: center;
-  line-height: 1.6;
+  color: var(--text-secondary);
 }
 
-.rsvp-success {
-  color: #16a34a;
-  font-weight: 600;
+.event-rsvp .rsvp-success {
+  color: var(--success);
+  font-weight: 700;
 }
 
 .event-rsvp .error {
-  color: #dc2626;
+  color: var(--danger);
   margin-top: 12px;
 }
 
 /* =========================
-   CREATE EVENT PAGE
+   27. CREATE EVENT PAGE
 ========================= */
 
 .create-event-page {
-  min-height: calc(100vh - 200px);
-  padding: 50px 20px;
-  background-color: #f5f5f7;
+  min-height: calc(100vh - 100px);
+  padding: 55px 20px 80px;
+  background: var(--background);
 }
 
 .create-event-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
+
   margin: 0 auto;
-  padding: 35px;
-  background-color: white;
-  border: 1px solid #ededf2;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  padding: 42px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+
+  box-shadow: var(--shadow-md);
 }
 
-/* Create event heading */
+/* =========================
+   28. CREATE EVENT HEADING
+========================= */
 
 .create-event-heading {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin: 10px 0 30px;
+
+  margin: 5px 0 35px;
 }
 
 .create-event-heading > svg {
-  color: #6366f1;
-  margin-bottom: 15px;
+  width: 55px;
+  height: 55px;
+
+  padding: 13px;
+
+  color: var(--primary);
+  background: var(--primary-light);
+  border-radius: 16px;
+
+  margin-bottom: 20px;
 }
 
 .create-event-heading h1 {
-  font-family: "Montserrat", sans-serif;
-  font-size: 27px;
+  font-family: "Manrope", sans-serif;
+  font-size: 29px;
   font-weight: 800;
-  color: #222;
+  letter-spacing: -0.7px;
+  color: var(--text);
   margin-bottom: 10px;
 }
 
 .create-event-heading p {
-  font-family: "Montserrat", sans-serif;
   font-size: 14px;
-  color: #777;
-  line-height: 1.6;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
-/* Create event form */
+/* =========================
+   29. CREATE EVENT FORM
+========================= */
 
 .create-event-container form {
   display: flex;
@@ -802,78 +985,167 @@ select {
 
 .create-event-container .form-group {
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .create-event-container .form-group label {
   display: block;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 9px;
 }
 
 .create-event-container .form-group input,
 .create-event-container .form-group textarea,
 .create-event-container .form-group select {
   width: 100%;
-  padding: 13px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  background-color: #fff;
-  color: #222;
-  transition: 0.2s ease;
-}
+  padding: 14px 15px;
 
-.create-event-container .form-group textarea {
-  min-height: 120px;
-  resize: vertical;
+  border: 1px solid var(--border-dark);
+  border-radius: 11px;
+
+  background: #fcfcff;
+  color: var(--text);
+
+  font-size: 14px;
+  outline: none;
+
+  transition: var(--transition);
 }
 
 .create-event-container .form-group input:focus,
 .create-event-container .form-group textarea:focus,
 .create-event-container .form-group select:focus {
-  outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(104, 84, 232, 0.1);
 }
 
-/* Create event submit button */
+.create-event-container .form-group textarea {
+  min-height: 135px;
+  resize: vertical;
+}
+
+/* =========================
+   30. CREATE EVENT BUTTON
+========================= */
 
 .create-event-container button {
   width: 100%;
-  padding: 14px;
-  background-color: #6366f1;
-  color: white;
+  padding: 15px;
+  margin-top: 8px;
+
   border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-  margin-top: 5px;
+  border-radius: 11px;
+
+  background: linear-gradient(135deg, #7965f2, #5945dc);
+  color: white;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  box-shadow: 0 5px 16px rgba(104, 84, 232, 0.2);
+
+  transition: var(--transition);
 }
 
 .create-event-container button:hover {
-  background-color: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 23px rgba(104, 84, 232, 0.3);
 }
 
 .create-event-container button:disabled {
-  background-color: #a5a6f6;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
 /* =========================
-   MOBILE RESPONSIVENESS
+   31. LOADING & EMPTY STATES
+========================= */
+
+.main-container > p,
+.upcoming-events > p,
+.event-details-container > p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.event-list > p,
+.upcoming-events > p {
+  padding: 25px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+/* =========================
+   32. GENERAL HOVER EFFECTS
+========================= */
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(104, 84, 232, 0.4);
+  outline-offset: 3px;
+}
+
+/* =========================
+   33. TABLET RESPONSIVENESS
+========================= */
+
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 25px;
+  }
+
+  .header-logo {
+    font-size: 25px;
+  }
+
+  .header-profile {
+    gap: 15px;
+  }
+
+  .main-page,
+  .profile-page,
+  .event-details-page,
+  .create-event-page {
+    padding-top: 40px;
+  }
+
+  .event-card-single-content {
+    padding: 30px;
+  }
+
+  .create-event-container {
+    padding: 32px;
+  }
+
+  .main-container > h1 {
+    font-size: 29px;
+  }
+}
+
+/* =========================
+   34. MOBILE RESPONSIVENESS
 ========================= */
 
 @media (max-width: 480px) {
   /* Welcome page */
 
+  .welcome-page {
+    padding: 20px;
+  }
+
   .welcome-page h1 {
-    font-size: 38px;
+    font-size: 42px;
+    letter-spacing: -2px;
+  }
+
+  .welcome-page p {
+    font-size: 14px;
   }
 
   .welcome-buttons {
@@ -882,101 +1154,100 @@ select {
     max-width: 280px;
   }
 
+  .welcome-buttons a {
+    width: 100%;
+  }
+
   /* Login and register */
+
+  .login-page,
+  .register-page {
+    padding: 18px;
+  }
 
   .login-container,
   .register-container {
-    padding: 30px 22px;
+    padding: 32px 23px;
+    border-radius: 19px;
   }
 
   .login-container h1,
   .register-container h1 {
-    font-size: 30px;
+    font-size: 29px;
   }
 
   /* Header */
 
   .header {
-    height: 175px;
+    min-height: 85px;
+    padding: 15px 16px;
   }
 
   .header-brand {
-    gap: 14px;
-    transform: translateY(35px);
+    gap: 4px;
   }
 
   .header-logo {
-    font-size: 29px;
-    letter-spacing: 1px;
+    font-size: 21px;
+    letter-spacing: -1px;
+  }
+
+  .header-nav a {
+    font-size: 12px;
   }
 
   .header-profile {
-    right: 15px;
-    top: calc(50% + 35px);
-    gap: 10px;
+    gap: 11px;
   }
 
-  .header-profile a {
-    font-size: 13px;
+  .header-profile a,
+  .header-logout {
+    font-size: 11px;
+    gap: 5px;
+  }
+
+  .header-profile svg,
+  .header-logout svg {
+    width: 15px;
+    height: 15px;
   }
 
   .header-logout {
-    font-size: 12px;
-  }
-
-  /* Profile page */
-
-  .profile-page {
-    padding: 35px 16px;
-  }
-
-  .profile-info {
-    margin-bottom: 35px;
-  }
-
-  .profile-picture {
-    width: 105px;
-    height: 105px;
-  }
-
-  .profile-info h1 {
-    font-size: 23px;
-  }
-
-  .upcoming-events h2 {
-    font-size: 19px;
-  }
-
-  .create-event {
-    margin: 25px 0 45px;
-  }
-
-  .create-event-button {
-    padding: 9px 18px;
-    font-size: 12px;
+    padding: 8px;
   }
 
   /* Main page */
 
   .main-page {
-    padding: 30px 16px;
+    padding: 35px 16px 55px;
   }
 
   .main-container > h1 {
-    font-size: 24px;
+    font-size: 25px;
+  }
+
+  .main-container > p {
+    font-size: 13px;
   }
 
   /* Event cards */
 
   .event-card {
-    padding: 16px;
-    gap: 14px;
+    padding: 17px;
+    gap: 13px;
+    border-radius: 15px;
   }
 
   .event-icon {
-    width: 45px;
-    height: 45px;
-    min-width: 45px;
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 12px;
+  }
+
+  .event-icon svg {
+    width: 21px;
+    height: 21px;
   }
 
   .event-details h3 {
@@ -984,59 +1255,119 @@ select {
   }
 
   .event-details p {
-    font-size: 12px;
+    font-size: 11px;
   }
 
-  /* Event details page */
+  /* Profile */
+
+  .profile-page {
+    padding: 35px 16px 55px;
+  }
+
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-info h1 {
+    font-size: 23px;
+  }
+
+  .profile-info p {
+    font-size: 13px;
+  }
+
+  .upcoming-events h2 {
+    font-size: 19px;
+  }
+
+  .create-event {
+    margin: 25px 0 40px;
+  }
+
+  /* Event details */
 
   .event-details-page {
-    padding: 30px 16px;
+    padding: 30px 15px 55px;
+  }
+
+  .event-card-single {
+    border-radius: 18px;
   }
 
   .event-card-single-content {
-    padding: 24px 20px;
+    padding: 23px 19px;
   }
 
   .event-card-single-content h1 {
-    font-size: 21px;
+    font-size: 23px;
   }
 
   .event-description {
     font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 22px;
   }
 
+  /* Event information */
+
   .event-info {
-    padding: 16px;
-    gap: 14px;
+    padding: 18px;
+    gap: 16px;
+    border-radius: 13px;
   }
 
   .event-info p {
     font-size: 12px;
+    gap: 10px;
   }
 
-  /* RSVP buttons */
+  .event-info svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Attendees */
+
+  .event-attendees {
+    padding: 18px;
+    margin-top: 20px;
+    border-radius: 13px;
+  }
+
+  .event-attendees h2 {
+    font-size: 17px;
+  }
+
+  .event-attendees p {
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* RSVP */
 
   .event-rsvp {
-    margin-top: 20px;
+    margin-top: 22px;
   }
 
   .event-rsvp button {
-    padding: 13px;
-    font-size: 14px;
+    padding: 14px;
+    font-size: 13px;
   }
 
-  /* Create event page */
+  /* Create event */
 
   .create-event-page {
-    padding: 30px 16px;
+    padding: 30px 15px 55px;
   }
 
   .create-event-container {
-    padding: 24px 20px;
+    padding: 25px 19px;
+    border-radius: 18px;
   }
 
   .create-event-heading h1 {
-    font-size: 23px;
+    font-size: 24px;
   }
 
   .create-event-heading p {
@@ -1044,7 +1375,123 @@ select {
   }
 
   .create-event-container .form-group input,
-  .create-event-container .form-group textarea {
+  .create-event-container .form-group textarea,
+  .create-event-container .form-group select {
     padding: 12px;
+    font-size: 13px;
+  }
+
+  /* Not found */
+
+  .notfound-container {
+    padding: 40px 22px;
+  }
+
+  .notfound-container h1 {
+    font-size: 80px;
+  }
+
+  .notfound-container h2 {
+    font-size: 20px;
+  }
+}
+
+/* =========================
+   35. REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* =========================
+   36. EDIT EVENT PAGE
+========================= */
+
+.edit-event-page {
+  min-height: calc(100vh - 100px);
+  padding: 55px 20px 80px;
+  background: var(--background);
+}
+
+/* Edit Event form uses the existing
+   Create Event design system */
+
+/* =========================
+   EDIT EVENT RESPONSIVENESS
+========================= */
+
+@media (max-width: 768px) {
+  .edit-event-page {
+    padding-top: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-event-page {
+    padding: 30px 15px 55px;
+  }
+}
+
+/* =========================
+   EDIT EVENT LINK
+========================= */
+
+.edit-event-button {
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.edit-event-button a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 12px 20px;
+
+  background: var(--primary-light);
+  color: var(--primary);
+
+  border: 1px solid #ded8ff;
+  border-radius: 11px;
+
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: var(--transition);
+}
+
+.edit-event-button a:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(104, 84, 232, 0.2);
+}
+
+.edit-event-button a svg {
+  flex-shrink: 0;
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+  .edit-event-button {
+    justify-content: stretch;
+  }
+
+  .edit-event-button a {
+    width: 100%;
+    padding: 13px;
   }
 }

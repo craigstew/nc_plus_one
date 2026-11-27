@@ -25,6 +25,7 @@ export interface EventDataSingle {
   address: string;
   capacity: number;
   created_at: string;
+  venue_id: number;
 }
 
 export interface CreateEventData {
@@ -33,4 +34,20 @@ export interface CreateEventData {
   starts_at: string;
   ends_at: string;
   venue_id: number;
+}
+
+export interface EditEventData {
+  title: string;
+  description: string;
+  starts_at: string;
+  ends_at: string;
+  venue_id: number;
+}
+
+export interface EventFormData {
+  title: string;
+  description: string;
+  startsAt: string;
+  endsAt: string;
+  venueId: string;
 }

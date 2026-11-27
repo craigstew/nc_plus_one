@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
+import { loginUser, registerUser } from "../api/auth";
 
 interface User {
   id: number;
@@ -28,27 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   });
 
   async function login(email: string, password: string): Promise<void> {
-    const response = await fetch(
-      import.meta.env.VITE_API_BACKEND_URL + "/auth/login",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error("Invalid Login Credentials");
-    }
-
-    const data = await response.json();
-
-    if (!data.access_token || !data.user) {
-      throw new Error("Missing token or user information");
-    }
+    const data = await loginUser(email, password);
 
     sessionStorage.setItem("token", data.access_token);
     setToken(data.access_token);
@@ -62,22 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string,
   ): Promise<void> {
-    const response = await fetch(
-      import.meta.env.VITE_API_BACKEND_URL + "/auth/register",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error("Invalid Register Credentials");
-    }
+    await registerUser(name, email, password);
   }
 
   function logout() {

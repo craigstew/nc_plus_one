@@ -8,7 +8,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { register } = useAuth();
+  const { register, login } = useAuth();
   const navigate = useNavigate();
 
   async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
@@ -17,7 +17,8 @@ export default function RegisterPage() {
 
     try {
       await register(name, email, password);
-      navigate("/login");
+      await login(email, password);
+      navigate("/main");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     }
